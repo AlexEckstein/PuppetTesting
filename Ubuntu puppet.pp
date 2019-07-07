@@ -78,43 +78,49 @@ file {$doc_root:
 	ensure => "directory",
 	owner => "root",
 	group => "root",
-	mode => 644
+	mode => 644,
 	}
 	
 file {$doc_root/AdminUser:
 	ensure => "directory",
 	owner => "AdminUser",
 	group => "filesgroup",
-	mode => 644
+	mode => 644,
+	require => User['AdminUser'],
 	}
 	
 file {$doc_root/NormalUser:
 	ensure => "directory",
 	owner => "NormalUser",
 	group => "filesgroup",
-	mode => 644
+	mode => 644,
+	require => User['NormalUser'],
 	}
 	
 file {$doc_root/GuestUser:
 	ensure => "directory",
 	owner => "GuestUser",
 	group => "filesgroup",
-	mode => 644
+	mode => 644,
+	require => User['GuestUser'],
 	}
 	
 file {$doc_root/EvilUser:
 	ensure => "directory",
 	owner => "EvilUser",
 	group => "filesgroup",
-	mode => 644
+	mode => 644,
+	require => User['EvilUser'],
 	}
 	
 service { 'apache2':
     ensure => 'running',
+	require => Package['apache2'],
   }
 
 service { 'clamav':
     ensure => 'running',
+	require => Package['clamav'],
   }
 	
 	
