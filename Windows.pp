@@ -4,81 +4,68 @@ exec { 'apt-get update':
 }
 
 package {'firefox':
- ensure => "installed"
+ ensure => "installed",
+ source => 'C:/installers/Firefox Setup 67.0.4.exe',
+ install_options => ['/VERYSILENT'],
  }
 
- 
-package {'apache2':
- ensure => "installed"
- }
- 
-package {'synaptic':
- ensure => "installed"
- }
- 
+
  package {'thunderbird':
- ensure => "installed"
+ ensure => "installed",
+  source => 'C:/installers/Thunderbird Setup 60.7.2.exe',
+   install_options => ['/VERYSILENT'],
+ }
+ 
+  package {'NotePad++':
+ ensure => "installed",
+  source => 'C:/installers/npp.7.7.1.Installer.exe',
+   install_options => ['/VERYSILENT'],
  }
 
- package {'gufw':
- ensure => "installed"
- }
- 
- package {'conky':
- ensure => "installed"
- }
- 
- package {'clamav':
- ensure => "installed"
- }
- 
  group{ 'filesgroup':
 	ensure => 'present',
+	name => 'filesgroup',
+	members => ['AdminUser''cis527'],
 	}
 	
  user { 'AdminUser':
  	  ensure           => 'present',
-      home             => '/home/AdminUser',
-      groups            => ['sudo''filesgroup'],
+      groups            => ['Administrators''Users'],
       password         => 'AdminUser123',
       password_max_age => '99999',
       password_min_age => '0',
-      shell            => '/bin/bash',
     }
 	
  user { 'NormalUser':
- 	  ensure           => 'present',
-      groups            => ['filesgroup'],
+	  ensure           => 'present',
+      groups            => ['Users'],
       password         => 'NormalUser123',
       password_max_age => '99999',
       password_min_age => '0',
-      shell            => '/bin/bash',
     }
  user { 'EvilUser':
  	  ensure           => 'present',
-      groups            => ['filesgroup'],
+      groups            => ['Users'],
       password         => 'EvilUser123',
       password_max_age => '99999',
       password_min_age => '0',
-      shell            => '/bin/bash',
     }
  user { 'GuestUser':
  	  ensure           => 'present',
-      groups            => ['filesgroup'],
+      groups            => ['Guests'],
       password         => 'GuestUser123',
       password_max_age => '99999',
       password_min_age => '0',
-      shell            => '/bin/bash',
     }
 	
-file {'/files':
+file {'c:/files':
 	ensure => "directory",
 	owner => "root",
 	group => "root",
 	mode => 770,
 	}
 	
-file {'/files/AdminUser':
+file {'c:/files/AdminUser':
 	ensure => "directory",
 	owner => "AdminUser",
 	group => "filesgroup",
@@ -86,7 +73,7 @@ file {'/files/AdminUser':
 	require => User['AdminUser'],
 	}
 	
-file {'/files/NormalUser':
+file {'c:/files/NormalUser':
 	ensure => "directory",
 	owner => "NormalUser",
 	group => "filesgroup",
@@ -94,7 +81,7 @@ file {'/files/NormalUser':
 	require => User['NormalUser'],
 	}
 	
-file {'/files/GuestUser':
+file {'c:/files/GuestUser':
 	ensure => "directory",
 	owner => "GuestUser",
 	group => "filesgroup",
@@ -102,7 +89,7 @@ file {'/files/GuestUser':
 	require => User['GuestUser'],
 	}
 	
-file {'/files/EvilUser':
+file {'c:/files/EvilUser':
 	ensure => "directory",
 	owner => "EvilUser",
 	group => "filesgroup",
@@ -110,20 +97,32 @@ file {'/files/EvilUser':
 	require => User['EvilUser'],
 	}
 	
-service { 'apache2':
+file { 'c:/files/AdminUser/hello.txt':  
+  ensure  => file,
+  content => "hello, world\n",
+}
+file { 'c:/files/NormalUser/hello.txt':  
+  ensure  => file,
+  content => "hello, world\n",
+}
+file { 'c:/files/GuestUser/hello.txt':  
+  ensure  => file,
+  content => "hello, world\n",
+}
+file { 'c:/files/EvilUser/hello.txt':  
+  ensure  => file,
+  content => "hello, world\n",
+}
+
+service { 'WindowsUpdate':
     ensure => 'running',
-	require => Package['apache2'],
+  }
+service { 'DNS Client':
+    ensure => 'running',
   }
 
-service { 'clamav':
+service { 'DHCP Client':
     ensure => 'running',
-	require => Package['clamav'],
   }
-	
-	
-	
-	
-	
-	
 	
 	
