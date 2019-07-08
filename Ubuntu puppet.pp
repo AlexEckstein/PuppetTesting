@@ -7,10 +7,7 @@ exec { 'apt-get update':
 package {'firefox':
  ensure => "installed"
  }
- 
-package {'thunderbird':
- ensure => "installed"
- }
+
  
 package {'apache2':
  ensure => "installed"
@@ -23,10 +20,7 @@ package {'synaptic':
  package {'thunderbird':
  ensure => "installed"
  }
- package {'gufw':
- ensure => "installed"
- }
- 
+
  package {'gufw':
  ensure => "installed"
  }
@@ -39,10 +33,14 @@ package {'synaptic':
  ensure => "installed"
  }
  
+ group{ 'filesgroup':
+	ensure => 'present',
+	}
+	
  user { 'AdminUser':
  	  ensure           => 'present',
       home             => '/home/AdminUser',
-      groups            => 'sudo,filesgroup',
+      groups            => ['sudo''filesgroup'],
       password         => 'AdminUser123',
       password_max_age => '99999',
       password_min_age => '0',
@@ -51,7 +49,7 @@ package {'synaptic':
 	
  user { 'NormalUser':
  	  ensure           => 'present',
-      groups            => 'NormalUser,filesgroup',
+      groups            => ['NormalUser''filesgroup'],
       password         => 'NormalUser123',
       password_max_age => '99999',
       password_min_age => '0',
@@ -59,7 +57,7 @@ package {'synaptic':
     }
  user { 'EvilUser':
  	  ensure           => 'present',
-      groups            => 'EvilUser,filesgroup',
+      groups            => ['EvilUser''filesgroup'],
       password         => 'EvilUser123',
       password_max_age => '99999',
       password_min_age => '0',
@@ -67,7 +65,7 @@ package {'synaptic':
     }
  user { 'GuestUser':
  	  ensure           => 'present',
-      groups            => 'GuestUser,filesgroup',
+      groups            => [GuestUser''filesgroup'],
       password         => 'GuestUser123',
       password_max_age => '99999',
       password_min_age => '0',
@@ -78,14 +76,14 @@ file {$doc_root:
 	ensure => "directory",
 	owner => "root",
 	group => "root",
-	mode => 644,
+	mode => 770,
 	}
 	
 file {$doc_root/AdminUser:
 	ensure => "directory",
 	owner => "AdminUser",
 	group => "filesgroup",
-	mode => 644,
+	mode => 770,
 	require => User['AdminUser'],
 	}
 	
@@ -93,7 +91,7 @@ file {$doc_root/NormalUser:
 	ensure => "directory",
 	owner => "NormalUser",
 	group => "filesgroup",
-	mode => 644,
+	mode => 770,
 	require => User['NormalUser'],
 	}
 	
@@ -101,7 +99,7 @@ file {$doc_root/GuestUser:
 	ensure => "directory",
 	owner => "GuestUser",
 	group => "filesgroup",
-	mode => 644,
+	mode => 770,
 	require => User['GuestUser'],
 	}
 	
@@ -109,7 +107,7 @@ file {$doc_root/EvilUser:
 	ensure => "directory",
 	owner => "EvilUser",
 	group => "filesgroup",
-	mode => 644,
+	mode => 770,
 	require => User['EvilUser'],
 	}
 	
