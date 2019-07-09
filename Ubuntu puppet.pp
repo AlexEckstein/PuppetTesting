@@ -75,7 +75,7 @@ file {'/files':
 	ensure => "directory",
 	owner => "root",
 	group => "root",
-	mode => 770,
+	mode => "770",
 	}
 	
 file {'/files/AdminUser':
@@ -90,7 +90,7 @@ file {'/files/NormalUser':
 	ensure => "directory",
 	owner => "NormalUser",
 	group => "filesgroup",
-	mode => 770,
+	mode => "770",
 	require => User['NormalUser'],
 	}
 	
@@ -98,7 +98,7 @@ file {'/files/GuestUser':
 	ensure => "directory",
 	owner => "GuestUser",
 	group => "filesgroup",
-	mode => 770,
+	mode => "770",
 	require => User['GuestUser'],
 	}
 	
@@ -106,10 +106,25 @@ file {'/files/EvilUser':
 	ensure => "directory",
 	owner => "EvilUser",
 	group => "filesgroup",
-	mode => 770,
+	mode => "770",
 	require => User['EvilUser'],
 	}
-	
+file { '/files/AdminUser/hello.txt':  
+  ensure  => file,
+  content => "hello, world\n",
+}
+file { '/files/NormalUser/hello.txt':  
+  ensure  => file,
+  content => "hello, world\n",
+}
+file { '/files/GuestUser/hello.txt':  
+  ensure  => file,
+  content => "hello, world\n",
+}
+file { '/files/EvilUser/hello.txt':  
+  ensure  => file,
+  content => "hello, world\n",
+}
 service { 'apache2':
     ensure => 'running',
 	require => Package['apache2'],
